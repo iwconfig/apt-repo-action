@@ -137,7 +137,7 @@ fi
 if [ -n "${includedsc}" ]; then
     $reprepro \
         -vvv \
-        includedeb \
+        includedsc \
         "${codename}" \
         "${includedsc[@]}"
 fi
