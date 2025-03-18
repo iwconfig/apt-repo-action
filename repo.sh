@@ -126,16 +126,20 @@ for package in "${packages[@]}"; do
     includedebs+=("${package}")
 done
 
-args=()
 # shellcheck disable=SC2128
 if [ -n "${includedebs}" ]; then
-    args+=("includedeb ${codename} ${includedebs[@]} ")     
+    $reprepro \
+        -vvv \
+        includedeb \
+        "${codename}" \
+        "${includedebs[@]}"
 fi
 if [ -n "${includedsc}" ]; then
-    args+=("includedsc ${codename} ${includedsc[@]} ")
-fi
-if [ -n "${args}" ]; then
-    $reprepro -vvv "${args[@]}"
+    $reprepro \
+        -vvv \
+        includedeb \
+        "${codename}" \
+        "${includedsc[@]}"
 fi
 
 if ! $reprepro_basedir -v checkpool fast |& tee /tmp/missing; then
