@@ -131,10 +131,10 @@ args=()
 if [ -n "${includedebs}" ]; then
     args+="includedeb ${codename} ${includedebs[@]} "        
 fi
-if [ -n "${includedsc}" ]; do
+if [ -n "${includedsc}" ]; then
     args+="includedsc ${codename} ${includedsc[@]} "
 fi
-if [ -n "${args}" ]; do
+if [ -n "${args}" ]; then
     $reprepro -vvv "${args[@]}"
 fi
 
