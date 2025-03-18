@@ -129,10 +129,10 @@ done
 args=()
 # shellcheck disable=SC2128
 if [ -n "${includedebs}" ]; then
-    args+="includedeb ${codename} ${includedebs[@]} "        
+    args+=("includedeb ${codename} ${includedebs[@]} ")     
 fi
 if [ -n "${includedsc}" ]; then
-    args+="includedsc ${codename} ${includedsc[@]} "
+    args+=("includedsc ${codename} ${includedsc[@]} ")
 fi
 if [ -n "${args}" ]; then
     $reprepro -vvv "${args[@]}"
