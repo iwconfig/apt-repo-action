@@ -121,9 +121,9 @@ for package in "${packages[@]}"; do
     fi
     printf "\e\033[0;38;5;166mAdding\e[0m\n"
     includedebs+=("${package}")
+    includedsc+=($(cut -d'_' -f1,2 <<< "${package}").dsc)
 done
 
-includedsc+=($(cut -d'_' -f1,2 <<< "${package_name}").dsc)
 
 # shellcheck disable=SC2128
 if [ -n "${includedebs}" ]; then
