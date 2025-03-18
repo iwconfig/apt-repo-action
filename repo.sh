@@ -157,7 +157,7 @@ if ! $reprepro_basedir -v checkpool fast |& tee /tmp/missing; then
     done
 fi
 
-$reprepro -vvv export
+$reprepro_basedir -vvv export
 
 cp -rv "${tmpdir}/.repo/${repo_name}"/{dists,pool} "${tmpdir}"/.repo/gpg.key "${repodir}"/
 
