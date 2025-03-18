@@ -121,7 +121,7 @@ for package in "${packages[@]}"; do
     fi
     printf "\e\033[0;38;5;166mAdding\e[0m\n"
     includedebs+=("${package}")
-    includedsc+=($(cut -d'_' -f1,2 <<< "${package}").dsc)
+    # includedsc+=($(cut -d'_' -f1,2 <<< "${package}").dsc)
 done
 
 
@@ -133,13 +133,13 @@ if [ -n "${includedebs}" ]; then
         "${codename}" \
         "${includedebs[@]}"
 fi
-if [ -n "${includedsc}" ]; then
-    $reprepro \
-        -vvv \
-        includedsc \
-        "${codename}" \
-        "${includedsc[@]}"
-fi
+# if [ -n "${includedsc}" ]; then
+#     $reprepro \
+#         -vvv \
+#         includedsc \
+#         "${codename}" \
+#         "${includedsc[@]}"
+# fi
 
 if ! $reprepro_basedir -v checkpool fast |& tee /tmp/missing; then
     printf "\e[0;36mStarting repo cache cleanup ...\e[0m\n"
