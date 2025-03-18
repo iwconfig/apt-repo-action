@@ -104,9 +104,6 @@ for package in "${packages[@]}"; do
         # shellcheck disable=SC2016
         filter='Package (=='"${package_name}"'), $Version (=='"${package_version}"')'
         ;;
-    source)
-        includedsc+=($(cut -d'_' -f1,2 <<< "${package_name}").dsc)
-        ;;
     *)
         # shellcheck disable=SC2016
         filter='Package (=='"${package_name}"'), $Version (=='"${package_version}"'), $Architecture (=='"${package_arch}"')'
@@ -125,6 +122,8 @@ for package in "${packages[@]}"; do
     printf "\e\033[0;38;5;166mAdding\e[0m\n"
     includedebs+=("${package}")
 done
+
+includedsc+=($(cut -d'_' -f1,2 <<< "${package_name}").dsc)
 
 # shellcheck disable=SC2128
 if [ -n "${includedebs}" ]; then
