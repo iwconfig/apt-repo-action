@@ -92,6 +92,7 @@ mkdir -p "${scan_dir}/build-${codename}-dummy-dir-for-find-to-succeed"
 mapfile -t packages < <(find "${scan_dir}" -type f -name "*.deb")
 
 includedebs=()
+includedsc=()
 
 for package in "${packages[@]}"; do
     package_name="$(dpkg -f "${package}" Package)"
@@ -102,6 +103,9 @@ for package in "${packages[@]}"; do
     "all")
         # shellcheck disable=SC2016
         filter='Package (=='"${package_name}"'), $Version (=='"${package_version}"')'
+        ;;
+    source)
+        includedsc+=($(cut -d'_' -f1,2 <<< "${package_name}").dsc)
         ;;
     *)
         # shellcheck disable=SC2016
@@ -114,7 +118,7 @@ for package in "${packages[@]}"; do
             continue
         fi
     fi
-    if grep -q "${package##*/}" <<<"${includedebs[@]}"; then
+    if grep -q "${package##*/}" <<<"${includedebs[@]}"$'\n'"${includedsc[@]}"; then
         printf "\e[0;32mOK\e[0m\n"
         continue
     fi
@@ -122,13 +126,16 @@ for package in "${packages[@]}"; do
     includedebs+=("${package}")
 done
 
+args=()
 # shellcheck disable=SC2128
 if [ -n "${includedebs}" ]; then
-    $reprepro \
-        -vvv \
-        includedeb \
-        "${codename}" \
-        "${includedebs[@]}"
+    args+="includedeb ${codename} ${includedebs[@]} "        
+fi
+if [ -n "${includedsc}" ]; do
+    args+="includedsc ${codename} ${includedsc[@]} "
+fi
+if [ -n "${args}" ]; do
+    $reprepro -vvv "${args[@]}"
 fi
 
 if ! $reprepro_basedir -v checkpool fast |& tee /tmp/missing; then
