@@ -157,6 +157,8 @@ if ! $reprepro_basedir -v checkpool fast |& tee /tmp/missing; then
     done
 fi
 
+$reprepro -vvv export
+
 cp -rv "${tmpdir}/.repo/${repo_name}"/{dists,pool} "${tmpdir}"/.repo/gpg.key "${repodir}"/
 
 # See https://github.com/actions/upload-pages-artifact#example-permissions-fix-for-linux
